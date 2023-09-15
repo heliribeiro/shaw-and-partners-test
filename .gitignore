@@ -1,2 +1,4 @@
 node_modules
 build
+database.db
+database.db-journal
