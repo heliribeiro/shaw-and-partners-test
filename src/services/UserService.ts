@@ -1,25 +1,30 @@
-import { IUserCreate } from "../interfaces/UserInterface";
 import { SavedMultipartFile } from "@fastify/multipart";
-
+import { Prisma } from "@prisma/client";
 import csv from "csv-parser";
 
 import fs from "fs";
 import { IUsersRespository } from "../repositories/IUsersRepository";
 class UserService {
   constructor(private usersRepository: IUsersRespository) {}
-  async createUser({ name, city, country, favorite_sport }: IUserCreate) {
-    await this.usersRepository.create({
+  async createUser({
+    name,
+    city,
+    country,
+    favorite_sport,
+  }: Prisma.UserCreateInput) {
+    const user = await this.usersRepository.create({
       name,
       city,
       country,
       favorite_sport,
     });
+    return user;
   }
 
   async createUsersfromCSV(svgFile: SavedMultipartFile) {
     const { filepath } = svgFile;
 
-    const results: IUserCreate[] = [];
+    const results: Prisma.UserCreateInput[] = [];
 
     fs.createReadStream(filepath)
       .pipe(csv())
