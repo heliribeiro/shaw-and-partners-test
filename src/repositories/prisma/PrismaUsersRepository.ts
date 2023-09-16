@@ -4,6 +4,8 @@ import { prisma } from "../../connection";
 
 export class PrismaUsersRepository implements IUsersRespository {
   async list(prop?: string | undefined): Promise<User[]> {
+    if (!prop) return await prisma.user.findMany();
+
     const users = await prisma.user.findMany({
       where: {
         OR: [
