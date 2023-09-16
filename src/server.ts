@@ -1,7 +1,15 @@
 import { app } from "./app";
+import { FileRoutes } from "./http/routes/files.routes";
 import { UserRoutes } from "./http/routes/users.routes";
 
-app.register(UserRoutes, { prefix: "users" });
+import multipart from "@fastify/multipart";
+
+app.register(multipart, {
+  limits: {},
+});
+
+app.register(UserRoutes, { prefix: "api/users" });
+app.register(FileRoutes, { prefix: "api/files" });
 
 app
   .listen({
