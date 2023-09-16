@@ -61,7 +61,7 @@ export async function listUsers(request: FastifyRequest, reply: FastifyReply) {
 
     const users = await UserService.listUsers(q);
 
-    return reply.status(201).send({ message: "Users found", users });
+    return reply.status(200).send({ message: "Users found", users });
   } catch (error: any) {
     return reply.status(400).send({ message: error?.issues[0] });
   }
