@@ -59,7 +59,7 @@ export async function listUsers(request: FastifyRequest, reply: FastifyReply) {
   try {
     const { q } = createUsereBodySchema.parse(request.query);
 
-    const users = await UserService.listUsers();
+    const users = await UserService.listUsers(q);
 
     return reply.status(201).send({ message: "Users found", users });
   } catch (error: any) {

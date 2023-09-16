@@ -48,7 +48,30 @@ class UserService {
   }
 
   async listUsers(prop?: string) {
-    return await prisma.user.findMany();
+    return await prisma.user.findMany({
+      where: {
+        OR: [
+          {
+            name: {
+              contains: prop,
+            },
+          },
+          {
+            city: {
+              contains: prop,
+            },
+          },
+          {
+            country: {
+              contains: prop,
+            },
+          },
+          {
+            favorite_sport: prop,
+          },
+        ],
+      },
+    });
   }
 }
 
