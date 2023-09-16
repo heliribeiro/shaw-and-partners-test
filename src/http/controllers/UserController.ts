@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 
-import UserService from "../../services/UserService";
 import { z } from "zod";
+import { makeFactoryUserService } from "../../services/factories/makeFactoryUserService";
 
 export async function createuser(request: FastifyRequest, reply: FastifyReply) {
   const createUsereBodySchema = z.object({
@@ -15,7 +15,9 @@ export async function createuser(request: FastifyRequest, reply: FastifyReply) {
     const { name, city, country, favorite_sport } = createUsereBodySchema.parse(
       request.body
     );
-    const result = await UserService.createUser({
+
+    const UsersService = makeFactoryUserService();
+    const result = await UsersService.createUser({
       name,
       city,
       country,
@@ -42,6 +44,7 @@ export async function createUsersfromCSV(
     if (svgFile.mimetype !== "text/csv") {
       return reply.status(400).send({ message: "Unnaceptable file type" });
     }
+    const UserService = makeFactoryUserService();
     let result = await UserService.createUsersfromCSV(svgFile);
     return reply
       .status(201)
@@ -58,7 +61,7 @@ export async function listUsers(request: FastifyRequest, reply: FastifyReply) {
 
   try {
     const { q } = createUsereBodySchema.parse(request.query);
-
+    const UserService = makeFactoryUserService();
     const users = await UserService.listUsers(q);
 
     return reply.status(200).send({ message: "Users found", users });

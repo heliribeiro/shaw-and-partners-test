@@ -1,19 +1,18 @@
-import { prisma } from "../connection";
 import { IUserCreate } from "../interfaces/UserInterface";
 import { SavedMultipartFile } from "@fastify/multipart";
 
 import csv from "csv-parser";
 
 import fs from "fs";
+import { IUsersRespository } from "../repositories/IUsersRepository";
 class UserService {
+  constructor(private usersRepository: IUsersRespository) {}
   async createUser({ name, city, country, favorite_sport }: IUserCreate) {
-    const result = await prisma.user.create({
-      data: {
-        name,
-        city,
-        country,
-        favorite_sport,
-      },
+    await this.usersRepository.create({
+      name,
+      city,
+      country,
+      favorite_sport,
     });
   }
 
@@ -27,52 +26,23 @@ class UserService {
       .on("data", (data) => results.push(data))
       .on("end", async () => {
         for (let user of results) {
-          const userExists = await prisma.user.findFirst({
-            where: {
-              name: user.name,
-            },
-          });
+          const userExists = await this.usersRepository.findByName(user.name);
 
           if (userExists) continue;
 
-          await prisma.user.create({
-            data: {
-              name: user.name,
-              city: user.city,
-              country: user.country,
-              favorite_sport: user.favorite_sport,
-            },
+          await this.usersRepository.create({
+            name: user.name,
+            city: user.city,
+            country: user.country,
+            favorite_sport: user.favorite_sport,
           });
         }
       });
   }
 
   async listUsers(prop?: string) {
-    return await prisma.user.findMany({
-      where: {
-        OR: [
-          {
-            name: {
-              contains: prop,
-            },
-          },
-          {
-            city: {
-              contains: prop,
-            },
-          },
-          {
-            country: {
-              contains: prop,
-            },
-          },
-          {
-            favorite_sport: prop,
-          },
-        ],
-      },
-    });
+    return await this.usersRepository.list(prop);
   }
 }
 
-export default new UserService();
+export { UserService };
