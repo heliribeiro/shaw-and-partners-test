@@ -3,9 +3,14 @@ import { FileRoutes } from "./http/routes/files.routes";
 import { UserRoutes } from "./http/routes/users.routes";
 
 import multipart from "@fastify/multipart";
+import cors from "@fastify/cors";
 
 app.register(multipart, {
   limits: {},
+});
+
+app.register(cors, {
+  origin: "*",
 });
 
 app.register(UserRoutes, { prefix: "api/users" });
