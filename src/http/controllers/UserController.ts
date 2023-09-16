@@ -17,15 +17,13 @@ export async function createuser(request: FastifyRequest, reply: FastifyReply) {
     );
 
     const UsersService = makeFactoryUserService();
-    const result = await UsersService.createUser({
+    await UsersService.createUser({
       name,
       city,
       country,
       favorite_sport,
     });
-    return reply
-      .status(201)
-      .send({ message: "User created successfully", result });
+    return reply.status(201).send();
   } catch (error: any) {
     return reply.status(400).send({ message: error?.issues[0] });
   }
@@ -45,10 +43,8 @@ export async function createUsersfromCSV(
       return reply.status(400).send({ message: "Unnaceptable file type" });
     }
     const UserService = makeFactoryUserService();
-    let result = await UserService.createUsersfromCSV(svgFile);
-    return reply
-      .status(201)
-      .send({ message: "File uploaded with success", result });
+    await UserService.createUsersfromCSV(svgFile);
+    return reply.status(201).send();
   } catch (error: any) {
     return reply.status(400).send({ message: error?.issues[0] });
   }
@@ -62,9 +58,9 @@ export async function listUsers(request: FastifyRequest, reply: FastifyReply) {
   try {
     const { q } = createUsereBodySchema.parse(request.query);
     const UserService = makeFactoryUserService();
-    const users = await UserService.listUsers(q);
+    const users = await UserService.listUsers(q?.trim());
 
-    return reply.status(200).send({ message: "Users found", users });
+    return reply.status(200).send(users);
   } catch (error: any) {
     return reply.status(400).send({ message: error?.issues[0] });
   }
