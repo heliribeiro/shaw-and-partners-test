@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+:root {
+  /* color palette */
+  --gray-color--100: #f2f2f2;
+  --gray-color-200: #dfe1e5;
+  --gray-color-700: #606367;
+  --gray-color-800: #3c4043;
+  --gray-color-900: #202125;
+  --white-color: #ffffff;
+  --green-color: #35bf98;
+  --black-color: #000000;
+  --black-color-rgb: 0, 0, 0;
+
+  --background-color: var(--gray-color--100);
+  --text-color: var(--gray-color-900);
+  --card-text-color: var(--gray-color-800);
+  --card-border-color: var(--gray-color-200);
+  --wrapper-color: var(--white-color);
+  --shadow-color: rgba(var(--black-color-rgb), 0.1);
+  --gray-border-color: var(--gray-color-200);
+  --green-border-color: var(--green-color);
+  --btn-background-color: var(--green-color);
+  --btn-text-color: var(--white-color);
+  --success-color: var(--green-color);
+
+  --delay-time: 0.3s;
+}
+
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: var(--background-color);
+}
+
+button {
+  cursor: pointer;
+}
